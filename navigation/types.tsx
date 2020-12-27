@@ -16,7 +16,7 @@ export type HomeParamList = {
 
 export type ListsParamList = {
   ListsScreen: undefined;
-  ListScreen: undefined;
+  ListScreen: { id: string };
 };
 
 export type SettingsParamList = {

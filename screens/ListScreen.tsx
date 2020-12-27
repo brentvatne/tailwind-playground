@@ -5,7 +5,7 @@ import { style } from "tailwind-react-native";
 
 import { Text, ScrollView, Separator, View } from "../components/Themed";
 import Checkbox from "../components/Checkbox";
-import { ListsParamList } from "../types";
+import { ListsParamList } from "../navigation/types";
 import { useList, setDone } from "../store";
 
 type Props = StackScreenProps<ListsParamList, "ListScreen">;

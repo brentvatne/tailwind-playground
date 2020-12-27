@@ -2,7 +2,7 @@ import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
 
-import { RootStackParamList } from "../types";
+import { RootStackParamList } from "./types";
 import { Text } from '../components/Themed';
 import PressableOpacity from "../components/PressableOpacity";
 import NotFoundScreen from "../screens/NotFoundScreen";

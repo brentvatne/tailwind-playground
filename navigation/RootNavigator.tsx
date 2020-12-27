@@ -2,7 +2,7 @@ import * as React from "react";
 import { enableScreens } from "react-native-screens";
 import { createNativeStackNavigator } from "react-native-screens/native-stack";
 
-import { RootStackParamList } from "../types";
+import { RootStackParamList } from "./types";
 import NotFoundScreen from "../screens/NotFoundScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import BottomTabNavigator from "./BottomTabNavigator";

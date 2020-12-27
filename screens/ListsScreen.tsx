@@ -4,7 +4,7 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { style } from "tailwind-react-native";
 
 import { Text, ScrollView, Separator, View } from "../components/Themed";
-import { ListsParamList } from "../types";
+import { ListsParamList } from "../navigation/types";
 import { useLists } from "../store";
 
 type Props = StackScreenProps<ListsParamList, "ListsScreen">;

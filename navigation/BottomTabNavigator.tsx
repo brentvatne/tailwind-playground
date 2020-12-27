@@ -16,7 +16,7 @@ import {
   HomeParamList,
   SettingsParamList,
   ListsParamList,
-} from "../types";
+} from "./types";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
