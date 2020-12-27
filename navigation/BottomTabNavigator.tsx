@@ -1,14 +1,16 @@
 import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createStackNavigator } from "@react-navigation/stack";
+import createNativeStackNavigator from "./createNativeStackNavigator";
 import * as React from "react";
-import { Text, Platform } from "react-native";
+import { Image, Text, Platform, View } from "react-native";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
+import PressableOpacity from "../components/PressableOpacity";
 import HomeScreen from "../screens/HomeScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import ListsScreen from "../screens/ListsScreen";
+import ListScreen from "../screens/ListScreen";
 import {
   BottomTabParamList,
   HomeParamList,
@@ -29,6 +31,9 @@ export default function BottomTabNavigator() {
         labelPosition: "below-icon",
         style: {
           backgroundColor: Colors[colorScheme].tabBackground,
+          // I personally would not center the tabs but just doing it like the
+          // example app that this is modeled after
+          alignItems: "center",
           ...(Platform.OS === "web"
             ? {
                 borderTopWidth: 0,
@@ -38,7 +43,7 @@ export default function BottomTabNavigator() {
               }
             : null),
         },
-        tabStyle: { paddingHorizontal: 24 },
+        tabStyle: { paddingHorizontal: 28, flex: 0 },
       }}
     >
       <BottomTab.Screen
@@ -99,13 +104,61 @@ function TabBarIcon(props: {
   return <Ionicons size={19} {...props} style={{ marginTop: 3 }} />;
 }
 
-const defaultStackOptions: any = {
-  headerStyle: { backgroundColor: Colors.any.navigationBar },
-  headerTintColor: "#fff",
-  headerTitleAlign: "center",
-};
+const TIM_COOK_PNG =
+  "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80";
 
-const HomeStack = createStackNavigator<HomeParamList>();
+function HeaderRight({ navigation }: any) {
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        marginRight: Platform.OS === "web" ? 15 : 0,
+        alignItems: "center",
+      }}
+    >
+      <PressableOpacity onPress={() => navigation.navigate("Notifications")}>
+        <Ionicons
+          size={24}
+          color={Colors.dark.tabIconDefault}
+          name="ios-notifications-outline"
+        />
+      </PressableOpacity>
+      <View style={{ marginLeft: 20 }} />
+      <PressableOpacity onPress={() => {}}>
+        <Image
+          source={{ uri: TIM_COOK_PNG }}
+          style={{
+            ...Platform.select({
+              web: {
+                width: 32,
+                height: 32,
+                borderRadius: 16,
+              },
+              default: {
+                width: 26,
+                height: 26,
+                borderRadius: 13,
+              },
+            }),
+            backgroundColor: "#eee",
+          }}
+        />
+      </PressableOpacity>
+    </View>
+  );
+}
+
+const defaultStackOptions: any = ({ navigation }: any) => ({
+  headerStyle: {
+    backgroundColor: Colors.any.navigationBar,
+    borderBottomWidth: 0,
+  },
+  stackAnimation: Platform.OS === "android" ? "none" : "default",
+  headerTintColor: "#fff",
+  headerRight: () => <HeaderRight navigation={navigation} />,
+});
+
+const HomeStack = createNativeStackNavigator<HomeParamList>();
 function HomeNavigator() {
   return (
     <HomeStack.Navigator screenOptions={defaultStackOptions}>
@@ -118,7 +171,7 @@ function HomeNavigator() {
   );
 }
 
-const SettingsStack = createStackNavigator<SettingsParamList>();
+const SettingsStack = createNativeStackNavigator<SettingsParamList>();
 function SettingsNavigator() {
   return (
     <SettingsStack.Navigator screenOptions={defaultStackOptions}>
@@ -131,7 +184,7 @@ function SettingsNavigator() {
   );
 }
 
-const ListsStack = createStackNavigator<ListsParamList>();
+const ListsStack = createNativeStackNavigator<ListsParamList>();
 function ListsNavigator() {
   return (
     <ListsStack.Navigator screenOptions={defaultStackOptions}>
@@ -139,6 +192,11 @@ function ListsNavigator() {
         name="ListsScreen"
         options={{ title: "Lists" }}
         component={ListsScreen}
+      />
+      <ListsStack.Screen
+        name="ListScreen"
+        options={{ title: "List", headerRight: () => null }}
+        component={ListScreen}
       />
     </ListsStack.Navigator>
   );

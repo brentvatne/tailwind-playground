@@ -1,29 +1,42 @@
 import * as React from "react";
-import { StyleSheet } from "react-native";
+import { Switch } from "react-native";
+import { ScrollView, Text, View } from "../components/Themed";
 
-import { Text, View } from "../components/Themed";
+import { style } from "tailwind-react-native";
+import { useSettings } from "../store";
 
-export default function SettingsScreen() {
+export default function ListScreen() {
+  const [settings, setSettings] = useSettings();
+
+  if (!settings) {
+    return <View />;
+  }
+
   return (
-    <View style={styles.container}>
+    <ScrollView>
       <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-    </View>
+        style={style([
+          "flex-1",
+          "ml-4",
+          "mr-4",
+          "pt-5",
+          "pb-5",
+          "flex-row",
+          "justify-between",
+          "items-center",
+        ])}
+      >
+        <Text style={style(["text-lg"])}>Enable Notifications</Text>
+        <Switch
+          value={settings.enableNotifications}
+          onValueChange={() =>
+            setSettings({
+              ...settings,
+              enableNotifications: !settings.enableNotifications,
+            })
+          }
+        />
+      </View>
+    </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
-  },
-});

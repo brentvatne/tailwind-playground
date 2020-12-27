@@ -1,29 +1,47 @@
 import * as React from "react";
-import { StyleSheet } from "react-native";
+import { Image } from "react-native";
+import { style } from "tailwind-react-native";
 
-import { Text, View } from "../components/Themed";
+import { ScrollView, Text, View } from "../components/Themed";
+import { useHomeItems } from "../store";
+import Card from "../components/Card";
 
-export default function HomeScreen() {
+function HomeCard({ item }: { item: ReturnType<typeof useHomeItems>[0] }) {
   return (
-    <View style={styles.container}>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
+    <Card style={style("m-2 resize-contain")}>
+      <Image
+        source={{ uri: item.image }}
+        style={{ height: 140, width: "100%" }}
       />
-    </View>
+      <View style={style(["pl-5", "pt-5", "pr-5", "pb-4"])} darkColor="rgb(15, 15, 15)">
+        <Text
+          style={style(["text-lg", "font-bold", "text-gray-400", "uppercase"])}
+        >
+          {item.type}
+        </Text>
+        <Text style={style(["font-bold", "text-2xl"])}>{item.title}</Text>
+        <Text style={style(["text-sm", "text-gray-500", "my-2"])}>
+          {item.text}
+        </Text>
+      </View>
+    </Card>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
-  },
-});
+export default function HomeScreen() {
+  const homeItems = useHomeItems();
+
+  return (
+    <ScrollView
+      style={{ flex: 1 }}
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={style(["items-center", "pt-1", "pb-2"])}
+    >
+      <View style={[style("w-full"), { maxWidth: 700 }]}>
+        {homeItems.map((item: any) => (
+          <HomeCard item={item} key={item.title} />
+        ))}
+      </View>
+    </ScrollView>
+  );
+}

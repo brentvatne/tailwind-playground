@@ -1,5 +1,6 @@
 export type RootStackParamList = {
   Root: undefined;
+  Notifications: undefined;
   NotFound: undefined;
 };
 
@@ -15,6 +16,7 @@ export type HomeParamList = {
 
 export type ListsParamList = {
   ListsScreen: undefined;
+  ListScreen: undefined;
 };
 
 export type SettingsParamList = {

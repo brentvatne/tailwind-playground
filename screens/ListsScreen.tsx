@@ -1,29 +1,49 @@
 import * as React from "react";
-import { StyleSheet } from "react-native";
+import { FlatList, Pressable } from "react-native";
+import { StackScreenProps } from "@react-navigation/stack";
+import { style } from "tailwind-react-native";
 
-import { Text, View } from "../components/Themed";
+import { Text, ScrollView, Separator, View } from "../components/Themed";
+import { ListsParamList } from "../types";
+import { useLists } from "../store";
 
-export default function ListsScreen() {
+type Props = StackScreenProps<ListsParamList, "ListsScreen">;
+
+export default function ListsScreen(props: Props) {
+  const lists = useLists();
+  const renderItem = React.useCallback(
+    ({ item }) => <ListRow item={item} navigation={props.navigation} />,
+    [props.navigation]
+  );
+
   return (
-    <View style={styles.container}>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-    </View>
+    <FlatList
+      renderScrollComponent={(props) => <ScrollView {...props} />}
+      renderItem={renderItem}
+      ItemSeparatorComponent={Separator}
+      data={lists}
+      style={{ flex: 1 }}
+    />
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
-  },
-});
+function ListRow(props: {
+  item: { name: string; id: string; items: string[] };
+  navigation: Props["navigation"];
+}) {
+  return (
+    <Pressable
+      style={({ pressed }) => ({
+        opacity: pressed ? 0.5 : 1,
+        cursor: "pointer",
+      })}
+      onPress={() =>
+        props.navigation.navigate("ListScreen", { id: props.item.id })
+      }
+    >
+      <View style={style(["flex-1", "ml-4", "mr-4", "pt-5", "pb-5"])}>
+        <Text style={style("text-lg")}>{props.item.name}</Text>
+      </View>
+    </Pressable>
+  );
+}
