@@ -2,6 +2,7 @@ import * as React from "react";
 import { FlatList, Platform, Image } from "react-native";
 import { style } from "tailwind-react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { StatusBar } from "expo-status-bar";
 
 import { Text, ScrollView, View } from "../components/Themed";
 import Faces from "../constants/Faces";
@@ -15,27 +16,30 @@ export default function NotificationsScreen() {
   );
 
   return (
-    <FlatList
-      ListHeaderComponent={ListHeader}
-      renderScrollComponent={(props) => (
-        <ScrollView
-          {...props}
-          contentContainerStyle={{
-            paddingTop: Platform.select({
-              ios: 30,
-              android: 40,
-              default: 0,
-            }),
-          }}
-        />
-      )}
-      windowSize={Platform.OS === "web" ? 200 : 50}
-      showsVerticalScrollIndicator={false}
-      renderItem={renderItem}
-      keyExtractor={(_item, index) => index.toString()}
-      data={data}
-      style={{ flex: 1 }}
-    />
+    <>
+      <FlatList
+        ListHeaderComponent={ListHeader}
+        renderScrollComponent={(props) => (
+          <ScrollView
+            {...props}
+            contentContainerStyle={{
+              paddingTop: Platform.select({
+                ios: 30,
+                android: 40,
+                default: 0,
+              }),
+            }}
+          />
+        )}
+        windowSize={Platform.OS === "web" ? 200 : 50}
+        showsVerticalScrollIndicator={false}
+        renderItem={renderItem}
+        keyExtractor={(_item, index) => index.toString()}
+        data={data}
+        style={{ flex: 1 }}
+      />
+      <StatusBar style="light" />
+    </>
   );
 }
 

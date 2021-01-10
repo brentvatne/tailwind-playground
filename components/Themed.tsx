@@ -29,7 +29,9 @@ type ThemeProps = {
 
 export type TextProps = ThemeProps & DefaultText["props"];
 export type ViewProps = ThemeProps & DefaultView["props"];
-export type ScrollViewProps = ThemeProps & DefaultScrollView["props"];
+export type ScrollViewProps = ThemeProps & {
+  hasLargeTitle?: boolean;
+} & DefaultScrollView["props"];
 
 export function Text(props: TextProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
@@ -50,18 +52,37 @@ export function View(props: ViewProps) {
 
 export const ScrollView = React.forwardRef(
   (props: ScrollViewProps, ref: any) => {
-    const { style, lightColor, darkColor, ...otherProps } = props;
+    const {
+      style,
+      lightColor,
+      darkColor,
+      children,
+      contentContainerStyle,
+      ...otherProps
+    } = props;
     const backgroundColor = useThemeColor(
       { light: lightColor, dark: darkColor },
       "background"
     );
+
+    const [isReady, setIsReady] = React.useState(
+      props.hasLargeTitle ? false : true
+    );
+
+    React.useEffect(() => {
+      const raf = requestAnimationFrame(() => setIsReady(true));
+      return () => cancelAnimationFrame(raf);
+    }, []);
 
     return (
       <DefaultScrollView
         style={[{ backgroundColor }, style]}
         {...otherProps}
         ref={ref}
-      />
+        contentContainerStyle={isReady ? contentContainerStyle : null}
+      >
+        {isReady ? children : null}
+      </DefaultScrollView>
     );
   }
 );

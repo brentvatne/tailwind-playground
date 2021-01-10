@@ -13,7 +13,10 @@ function HomeCard({ item }: { item: ReturnType<typeof useHomeItems>[0] }) {
         source={{ uri: item.image }}
         style={{ height: 140, width: "100%" }}
       />
-      <View style={style(["pl-5", "pt-5", "pr-5", "pb-4"])} darkColor="rgb(15, 15, 15)">
+      <View
+        style={style(["pl-5", "pt-5", "pr-5", "pb-4"])}
+        darkColor="rgb(15, 15, 15)"
+      >
         <Text
           style={style(["text-lg", "font-bold", "text-gray-400", "uppercase"])}
         >
@@ -35,6 +38,7 @@ export default function HomeScreen() {
     <ScrollView
       style={{ flex: 1 }}
       showsVerticalScrollIndicator={false}
+      hasLargeTitle
       contentContainerStyle={style(["items-center", "pt-1", "pb-2"])}
     >
       <View style={[style("w-full"), { maxWidth: 700 }]}>

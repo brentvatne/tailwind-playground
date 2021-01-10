@@ -13,7 +13,7 @@ export default function ListScreen() {
   }
 
   return (
-    <ScrollView>
+    <ScrollView style={{ flex: 1 }} hasLargeTitle>
       <View
         style={style([
           "flex-1",

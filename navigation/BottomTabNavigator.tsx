@@ -29,31 +29,33 @@ export default function BottomTabNavigator() {
       tabBarOptions={{
         activeTintColor: Colors[colorScheme].tint,
         labelPosition: "below-icon",
-        style: {
-          backgroundColor: Colors[colorScheme].tabBackground,
-          // I personally would not center the tabs but just doing it like the
-          // example app that this is modeled after
-          alignItems: "center",
-          ...(Platform.OS === "web"
-            ? {
-                borderTopWidth: 0,
-                alignItems: "center",
-                paddingBottom: 7,
-                height: 55,
-              }
-            : null),
-        },
-        tabStyle: { paddingHorizontal: 28, flex: 0 },
+        ...Platform.select({
+          web: {
+            style: {
+              backgroundColor: Colors[colorScheme].tabBackground,
+              borderTopWidth: 0,
+              alignItems: "center",
+              paddingBottom: 7,
+              height: 55,
+            },
+            tabStyle: { paddingHorizontal: 28, flex: 0 },
+          },
+          default: {
+            style: {
+              backgroundColor: Colors[colorScheme].tabBackground,
+            },
+          },
+        }),
       }}
     >
       <BottomTab.Screen
         name="Home"
         component={HomeNavigator}
         options={{
-          tabBarLabel: ({ color }) => <TabBarLabel color={color} text="Home" />,
+          tabBarLabel: ({ color }) => <TabBarLabel color={color} text="Feed" />,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
-              name={focused ? "ios-home" : "ios-home-outline"}
+              name={focused ? "ios-flash" : "ios-flash-outline"}
               color={color}
             />
           ),
@@ -149,12 +151,8 @@ function HeaderRight({ navigation }: any) {
 }
 
 const defaultStackOptions: any = ({ navigation }: any) => ({
-  headerStyle: {
-    backgroundColor: Colors.any.navigationBar,
-    borderBottomWidth: 0,
-  },
+  headerLargeTitle: true,
   stackAnimation: Platform.OS === "android" ? "none" : "default",
-  headerTintColor: "#fff",
   headerRight: () => <HeaderRight navigation={navigation} />,
 });
 

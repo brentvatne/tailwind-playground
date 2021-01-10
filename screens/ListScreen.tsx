@@ -26,7 +26,7 @@ export default function ListScreen(props: Props) {
 
   return (
     <FlatList
-      renderScrollComponent={(props) => <ScrollView {...props} />}
+      renderScrollComponent={(props) => <ScrollView hasLargeTitle {...props} />}
       renderItem={renderItem}
       ItemSeparatorComponent={Separator}
       data={list!.items}
